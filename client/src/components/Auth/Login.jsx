@@ -22,7 +22,7 @@ function Login() {
 
   // ✅ if already logged in, redirect to dashboard
   if (user) {
-    navigate('/dashboard');
+    navigate('/admin');
     return null;
   }
 
