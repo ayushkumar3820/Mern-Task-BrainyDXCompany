@@ -17,7 +17,7 @@ const server = http.createServer(app);
 // ✅ Setup Socket.io with CORS
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://mern-task-brainy-dx-company-1nvy.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
