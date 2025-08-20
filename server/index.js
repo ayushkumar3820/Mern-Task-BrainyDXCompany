@@ -23,7 +23,14 @@ const io = new Server(server, {
 });
 
 // ✅ Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://mern-task-brainy-dx-company-1nvy.vercel.app",
+    "http://localhost:3000"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 app.use(express.json()); // important for JSON body parsing
 
 // ✅ Connect Database
