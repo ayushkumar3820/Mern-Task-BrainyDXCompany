@@ -17,20 +17,12 @@ const server = http.createServer(app);
 // ✅ Setup Socket.io with CORS
 const io = new Server(server, {
   cors: {
-    origin: "https://mern-task-brainy-dx-company.vercel.app",
+    origin: "https://mern-task-brainy-dx-company.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
 
-// ✅ Middleware
-app.use(cors({
-  origin: [
-    "https://mern-task-brainy-dx-company.vercel.app",
-    "http://localhost:3000"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+
 app.use(express.json()); // important for JSON body parsing
 
 // ✅ Connect Database
