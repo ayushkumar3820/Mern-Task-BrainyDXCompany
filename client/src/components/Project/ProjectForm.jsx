@@ -1,30 +1,40 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import { AuthContext } from '../../context/AuthContext';
-
+// client/src/components/ProjectForm.jsx
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 function ProjectForm() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [employees, setEmployees] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const { user } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/projects`, {
+      // Build payload WITHOUT employees key
+      const payload = {
         title,
         description,
-        employees: employees.split(',').map(id => id.trim()),
-      }, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
-      setTitle('');
-      setDescription('');
-      setEmployees('');
-      alert('Project created');
+        // manager will be taken from req.user on backend (auth middleware)
+        employees: [user.id || user._id], // use whichever field you have in user
+      };
+
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/projects`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${user?.token}` },
+        }
+      );
+
+      // reset inputs
+      setTitle("");
+      setDescription("");
+      alert("Project created");
     } catch (error) {
-      console.error('Error creating project:', error);
+      console.error("Error creating project:", error);
+      alert("Error creating project. Check console or server logs.");
     }
   };
 
@@ -46,14 +56,10 @@ function ProjectForm() {
           placeholder="Description"
           className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <input
-          type="text"
-          value={employees}
-          onChange={(e) => setEmployees(e.target.value)}
-          placeholder="Employee IDs (comma-separated)"
-          className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button type="submit" className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600"
+        >
           Create
         </button>
       </form>
